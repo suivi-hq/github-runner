@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Match docker group GID to host socket so runner can use Docker CLI
+if [ -S /var/run/docker.sock ]; then
+    DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
+    sudo groupmod -g "$DOCKER_GID" docker 2>/dev/null || true
+fi
+
 REGISTRATION_TOKEN=$(curl -sX POST \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${ACCESS_TOKEN}" \
