@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-# Match docker group GID to host socket so runner can use Docker CLI
+# Allow runner user to access Docker socket
 if [ -S /var/run/docker.sock ]; then
-    DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
-    sudo groupmod -g "$DOCKER_GID" docker 2>/dev/null || true
+    sudo chmod 666 /var/run/docker.sock
 fi
 
 REGISTRATION_TOKEN=$(curl -sX POST \
