@@ -1,0 +1,17 @@
+services:
+  runner:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - ORGANIZATION=${ORGANIZATION}
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - RUNNER_NAME=${RUNNER_NAME}
+      - RUNNER_LABELS=${RUNNER_LABELS}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner_work:/home/runner/actions-runner/_work
+
+volumes:
+  runner_work:
