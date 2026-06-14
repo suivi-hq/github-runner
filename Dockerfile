@@ -25,7 +25,9 @@ RUN ARCH=$(dpkg --print-architecture) \
     && ./bin/installdependencies.sh
 
 COPY start.sh .
-RUN chmod +x start.sh
+RUN chmod +x start.sh \
+    && mkdir -p _work \
+    && chown -R runner:runner /home/runner/actions-runner
 
 USER runner
 
